@@ -1,0 +1,49 @@
+# Environnement virtuel
+.venv/
+venv/
+ENV/
+
+# Fichiers Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Base de données SQLite
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# Fichiers de configuration locaux
+.env
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Fichiers Jupyter Notebook
+.ipynb_checkpoints
+
+# Fichiers de cache
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Fichiers ML
+*.h5
+*.pkl
+mlruns/ 
