@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8501:8501"  # Streamlit
+      - "5000:5000"  # MLflow
+    volumes:
+      - ./data:/app/data
+      - ./mlruns:/app/mlruns
+    environment:
+      - MLFLOW_TRACKING_URI=sqlite:///data/mlflow.db
+      - MLFLOW_EXPERIMENT_NAME=cost_prediction
+      - MLFLOW_ARTIFACT_LOCATION=/app/mlruns 

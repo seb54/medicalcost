@@ -1,0 +1,110 @@
+name: 🚀 Pipeline CI/CD - Application Médicale
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  format:
+    name: 🎨 Vérification du formatage
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Récupération du code source
+      uses: actions/checkout@v4
+
+    - name: 🐍 Configuration de Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: 📦 Installation des dépendances
+      run: |
+        python -m pip install --upgrade pip
+        pip install black
+
+    - name: 🔍 Vérification avec Black
+      run: |
+        black --check .
+
+  lint:
+    name: 🔍 Analyse statique du code
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Récupération du code source
+      uses: actions/checkout@v4
+
+    - name: 🐍 Configuration de Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: 📦 Installation des dépendances
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8
+
+    - name: 🔍 Vérification avec Flake8
+      run: |
+        flake8 . --count --max-complexity=10 --max-line-length=88 --statistics
+
+  tests:
+    name: 🧪 Tests unitaires
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Récupération du code source
+      uses: actions/checkout@v4
+
+    - name: 🐍 Configuration de Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: 📦 Installation des dépendances
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov
+
+    - name: 🧪 Configuration des tests
+      run: |
+        cp config.example.py config.py
+
+    - name: 🧪 Exécution des tests avec couverture
+      run: |
+        pytest tests/ -v --cov=./ --cov-report=xml
+
+  deploy:
+    name: 🚢 Déploiement en Production
+    needs: [format, lint, tests]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: 📥 Récupération du code source
+      uses: actions/checkout@v4
+
+    - name: 🐳 Configuration de Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: 🔑 Connexion à DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: 🏗️ Construction et publication de l'image Docker
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/medical-costs:latest
+
+    - name: 📋 Résumé du déploiement
+      run: |
+        echo "::group::Informations sur l'image déployée"
+        echo "✅ Image Docker publiée avec succès"
+        echo "📌 Tag: ${{ secrets.DOCKERHUB_USERNAME }}/medical-costs:latest"
+        echo "🕒 Date de déploiement: $(date)"
+        echo "::endgroup::"

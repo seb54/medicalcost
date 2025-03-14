@@ -1,0 +1,15 @@
+artifact_uri: file:D:\sas-ia-projet\mlruns/551154552327873309/f521cf3e9e4e4c76b02691caf8b38e74/artifacts
+end_time: 1741939536504
+entry_point_name: ''
+experiment_id: '551154552327873309'
+lifecycle_stage: active
+run_id: f521cf3e9e4e4c76b02691caf8b38e74
+run_name: burly-goose-825
+run_uuid: f521cf3e9e4e4c76b02691caf8b38e74
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1741939527584
+status: 3
+tags: []
+user_id: seb

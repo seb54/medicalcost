@@ -1,0 +1,44 @@
+[flake8]
+# Configuration générale
+max-line-length = 88
+max-complexity = 20
+statistics = True
+count = True
+show-source = True
+
+# Exclusions de fichiers
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    build,
+    dist,
+    *.pyc,
+    *.egg-info,
+    .eggs,
+    venv,
+    .env
+
+# Ignorer certaines erreurs
+ignore =
+    # E203: Whitespace before ':' (en conflit avec black)
+    E203,
+    # W503: Line break before binary operator (en conflit avec black)
+    W503,
+    # E501: Line too long (pour le HTML dans les strings)
+    E501,
+    # W291, W293: Trailing whitespace (pour le HTML)
+    W291,
+    W293,
+    # F541: f-string sans placeholder (pour les logs simples)
+    F541
+
+# Format des messages d'erreur
+format = %(path)s:%(row)d:%(col)d: %(code)s %(text)s
+
+# Ignorer certaines erreurs par fichier
+per-file-ignores =
+    # Ignorer les imports non utilisés dans les fichiers d'initialisation
+    __init__.py:F401
+    # Ignorer les imports non utilisés dans les tests
+    tests/*:F401
